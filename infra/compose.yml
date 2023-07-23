@@ -1,0 +1,27 @@
+#version: '3.1'
+#services:
+#  mariadb:
+#    container_name: mariadb
+#    image: amd64/mariadb:10.2.44
+#    restart: always
+#    environment:
+#      MARIADB_ROOT_PASSWORD: root1234
+#      MARIADB_USER: guzzi
+#      MARIADB_PASSWORD: guzzi1234
+#      MARIADB_DATABASE: guzzi
+#    ports:
+#      - "3306:3306"
+version: '3.1'
+services:
+  mariadb:
+    container_name: mysql
+    image: amd64/mysql:5.7.42
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "1"
+      MYSQL_USER: guzzi
+      MYSQL_PASSWORD: guzzi1234
+      MYSQL_DATABASE: guzzi
+#    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
