@@ -1,4 +1,4 @@
-package guzzi.user.vo;
+package guzzi.project.vo;
 
 import java.util.Date;
 

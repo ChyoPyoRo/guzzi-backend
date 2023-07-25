@@ -1,4 +1,4 @@
-package guzzi.user;
+package guzzi.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
