@@ -1,5 +1,6 @@
 package guzzi.project.repository;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -17,3 +18,5 @@ public interface UserDao {
      * */
     Map<String,Object> selectUserById(Map<String,Long> paramMap);
 }
+
+
