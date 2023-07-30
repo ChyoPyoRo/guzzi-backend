@@ -1,11 +1,19 @@
 package guzzi.project.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class UserVO {
-    private String userId;
+    @JsonProperty
+    private Number userid;
+    @JsonProperty
     private String id;
+    @JsonProperty
     private String password;
-    private Date createAt ;
+    @JsonProperty
+    private Date created_At ;
 
 }

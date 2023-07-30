@@ -3,11 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--<mapper namespace="mapper/userMapper.xml">-->
 <mapper namespace="guzzi.project.mapper.UserMapper">
-
-    <select id="findByUserId" parameterType="string" resultType="UserVO">
-        SELECT * FROM  WHERE id = #{id}
+    <select id="findAllMemberBySelect" resultType="guzzi.project.vo.UserVO">
+        SELECT
+            userid,
+            id,
+            password,
+            created_At
+        FROM
+            users
     </select>
-
+</mapper>
 <!--    <select id="findAll" resultType="User">-->
 <!--        SELECT * FROM users-->
 <!--    </select>-->
@@ -23,4 +28,3 @@
 <!--    <delete id="delete" parameterType="int">-->
 <!--        DELETE FROM users WHERE id = #{id}-->
 <!--    </delete>-->
-</mapper>

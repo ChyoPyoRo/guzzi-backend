@@ -23,14 +23,15 @@ spring:
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
     url: jdbc:oracle:thin:@localhost:1521/xe
-    username: guzzi
-    password: 1q2w3e4r!@
+    username: system
+    password: oracle
 mybatis:
   mapper-locations:
-    mapper/**/*.xml
-    mybatis/**/*.xml
-  type-aliases-package :
-
+    mapper/*Mapper.xml
+  type-aliases-package : guzzi.project.vo
+logging:
+  level:
+    guzzi.project.mapper : Trace
 
 
 
