@@ -37,6 +37,7 @@ public class voteController {
     public ResponseEntity<?> createVote(@RequestBody votePostDto votePost){
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //이 부분은 나중에 service로 옮겨야 할 지두
+        System.out.println(votePost.getVOTE_ID());
         HashMap<String, Object> vote = new HashMap<String, Object>();
         vote.put("VOTE_ID", votePost.getVOTE_ID());
         vote.put("USER_ID", votePost.getUSER_ID());

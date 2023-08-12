@@ -32,6 +32,8 @@ public class VoteServiceImpl implements VoteService{
     }
     @Override
     public void createVote(HashMap<String,Object> vote) {
+        System.out.println(vote);
+        System.out.print(voteMapper);
         voteMapper.createVote(vote);
     }
     public Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception{
