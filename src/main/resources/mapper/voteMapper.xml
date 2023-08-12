@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="guzzi.project.mapper.VoteMapper">
+    <select id="findVoteAll" resultType="guzzi.project.DTO.votePostDto">
+        SELECT
+            USER_ID,
+            VOTE_ID,
+            CREATE_AT,
+            CONTENT,
+            FIRST_ANSWER,
+            SECOND_ANSWER
+        FROM
+            vote
+    </select>
+    <insert id="createVote">
+        INSERT INTO VOTE
+            (USER_ID, CONTENT,
+            FIRST_ANSWER,
+            SECOND_ANSWER)
+        VALUES
+            (
+             #{vote.USER_ID},
+             #{vote.CONTENT},
+             #{vote.FIRST_ANSWER},
+             #{vote.SECOND_ANSWER}
+            )
+    </insert>
+</mapper>
