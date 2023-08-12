@@ -3,15 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--<mapper namespace="mapper/userMapper.xml">-->
 <mapper namespace="guzzi.project.mapper.UserMapper">
-    <select id="findAllMemberBySelect" resultType="guzzi.project.vo.UserVO">
-        SELECT
-            userid,
-            id,
-            password,
-            created_At
-        FROM
-            users
+<!--    <select id="findAllMemberBySelect" resultType="guzzi.project.vo.UserVO">-->
+<!--        SELECT-->
+<!--            userid,-->
+<!--            id,-->
+<!--            password,-->
+<!--            created_At-->
+<!--        FROM-->
+<!--            users-->
+<!--    </select>-->
+
+    <insert id="signup" parameterType="java.util.Map">
+        INSERT INTO USERS
+        ( USERID, ID, PASSWORD, CREATED_AT )
+        VALUES
+        (  userSeq.NEXTVAL , #{ID}, #{PASSWORD}, sysdate)
+    </insert>
+    <select id="idChk" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(*) FROM USERS
+        WHERE ID = #{ID}
     </select>
+    <insert id="login" parameterType="java.util.Map">
+
+    </insert>
+    <select id="findByUserId">
+
+    </select>
+    <select id="updateAccesstoken">
+
+    </select>
+
 </mapper>
 <!--    <select id="findAll" resultType="User">-->
 <!--        SELECT * FROM users-->

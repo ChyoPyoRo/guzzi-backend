@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -26,4 +27,10 @@
              #{vote.SECOND_ANSWER}
             )
     </insert>
+    <select id="getVoteOne" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.*, B.* FROM VOTE A LEFT JOIN VOTE_ANSWER B ON A.VOTE_ID = B.VOTE_ID WHERE A.VOTE_ID = #{VOTEID}
+    </select>
+    <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.Map">
+        select vote_id from vote
+    </select>
 </mapper>

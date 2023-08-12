@@ -1,25 +1,19 @@
 package guzzi.project.mapper;
 
-import guzzi.project.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface UserMapper {
-
-    public List<UserVO> findAllMemberBySelect();
-
-    /*
-     * selectUserById - userId 로 user info 조회 (토큰 관련 로직에 연결)
-     * @author 남현정
-     * @param paramMap
-     * @return paramMap
-     * @exception SQLException
-     * @exception Exception
-     * */
+    void signup(Map<String, Object> paramMap);
+    int idChk(Map<String, Object> paramMap);
+    //    public List<UserVO> findAllMemberBySelect();
+    void login(Map<String, Object> paramMap) ;
+    //accesstoken 으로 유저의 id 얻어서 userId값 반환
+     void findByUserId();
+    // access 만료 시 token 재발급을 위한 api
+     void updateAccesstoken();
 }
 
 

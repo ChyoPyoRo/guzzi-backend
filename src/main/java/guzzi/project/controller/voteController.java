@@ -12,14 +12,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import guzzi.project.service.VoteServiceImpl;
+import lombok.extern.slf4j.Slf4j;
+import org.mybatis.logging.Logger;
+import org.mybatis.logging.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.SQLException;
+import java.util.Map;
+
 
 @Slf4j
 @RestController
 public class voteController {
     @Autowired
     VoteServiceImpl voteService;
-    @PostMapping(path="/createvote")
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @PostMapping("/createvote")
     public ResponseEntity<?> createVote(@RequestBody votePostDto votePost){
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //이 부분은 나중에 service로 옮겨야 할 지두
         HashMap<String, Object> vote = new HashMap<String, Object>();
         vote.put("VOTE_ID", votePost.getVOTE_ID());
@@ -33,6 +49,46 @@ public class voteController {
         //여기서 결과 조회해서 보낸다.
         List<votePostDto> result = voteService.findVoteAll();
         return ResponseEntity.ok().body(result);
+
+    }
+
+
+    @GetMapping("/vote")
+    public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
+
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            Map<String, Object> vote =  voteService.getVoteOne(paramMap);
+            resultMap.put("vote", vote);
+
+
+        }catch (SQLException e){
+            System.out.println(e);
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        } catch(Exception e){
+            System.out.println(e);
+            return ResponseEntity.status(404).body(e.toString());
+        }
+        return ResponseEntity.ok()
+                .body(resultMap);
+
+    }
+
+    @GetMapping("/votes")
+    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception{
+        System.out.println(paramMap);
+//        form : {VOTEID=0}
+        Map<String, Object> resultMap = new HashMap<>();
+        try{
+            HashMap<String, Object> voteList = voteService.getVoteList(paramMap);
+            resultMap.put("voteList", voteList );
+        }catch (SQLException e){
+            System.out.println(e);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return ResponseEntity.ok().body(resultMap);
 
     }
 

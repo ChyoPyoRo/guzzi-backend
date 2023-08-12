@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 public class votePostDto {
     private Number USER_ID;
