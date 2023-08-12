@@ -11,7 +11,7 @@ public class voteAnswerPostDto {
 
     private Number VOTE_ID;
 
-    private Number First_ANSWER_COUNT;
+    private Number FIRST_ANSWER_COUNT;
 
     private Number SECOND_ANSWER_COUNT;
 

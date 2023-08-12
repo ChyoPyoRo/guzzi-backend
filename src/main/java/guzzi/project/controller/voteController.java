@@ -4,6 +4,7 @@ import guzzi.project.DTO.votePostDto;
 import guzzi.project.service.VoteServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,7 +19,7 @@ public class voteController {
     @Autowired
     VoteServiceImpl voteService;
     @PostMapping(path="/createvote")
-    public List<votePostDto> createVote(@RequestBody votePostDto votePost){
+    public ResponseEntity<?> createVote(@RequestBody votePostDto votePost){
         //이 부분은 나중에 service로 옮겨야 할 지두
         HashMap<String, Object> vote = new HashMap<String, Object>();
         vote.put("VOTE_ID", votePost.getVOTE_ID());
@@ -31,7 +32,7 @@ public class voteController {
         voteService.createVote(vote);
         //여기서 결과 조회해서 보낸다.
         List<votePostDto> result = voteService.findVoteAll();
-        return result;
+        return ResponseEntity.ok().body(result);
 
     }
 
