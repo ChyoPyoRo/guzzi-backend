@@ -39,7 +39,7 @@ public class VoteServiceImpl implements VoteService{
     public Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception{
 
         Map<String, Object> vote = voteMapper.getVoteOne(paramMap);
-
+        System.out.println(vote);
         if(vote != null){
             return vote;
         }else {

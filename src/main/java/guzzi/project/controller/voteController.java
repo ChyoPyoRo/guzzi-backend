@@ -61,8 +61,6 @@ public class voteController {
         try {
             Map<String, Object> vote =  voteService.getVoteOne(paramMap);
             resultMap.put("vote", vote);
-
-
         }catch (SQLException e){
             System.out.println(e);
             return ResponseEntity.badRequest()
