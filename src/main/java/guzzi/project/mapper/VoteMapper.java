@@ -12,6 +12,8 @@ import java.util.Map;
 public interface VoteMapper {
     Map<String, Object> getVoteOne(Map<String, Object> paramMap);
 
+
+
     HashMap<String, Object> getVoteList(Map<String, Object> paramMap);
 
     public List<votePostDto> findVoteAll();

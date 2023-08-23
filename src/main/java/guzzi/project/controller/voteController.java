@@ -3,26 +3,15 @@ package guzzi.project.controller;
 import guzzi.project.DTO.votePostDto;
 import guzzi.project.service.VoteServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
-import guzzi.project.service.VoteServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -58,7 +47,8 @@ public class voteController {
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
-            Map<String, Object> vote =  voteService.getVoteOne(paramMap);
+            Map<String, Object> vote =
+                    voteService.getVoteOne(paramMap);
             resultMap.put("vote", vote);
 
 

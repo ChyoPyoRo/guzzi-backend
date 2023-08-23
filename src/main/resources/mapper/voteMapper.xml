@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -28,9 +27,54 @@
             )
     </insert>
     <select id="getVoteOne" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT A.*, B.* FROM VOTE A LEFT JOIN VOTE_ANSWER B ON A.VOTE_ID = B.VOTE_ID WHERE A.VOTE_ID = #{VOTEID}
+        SELECT * FROM VOTE_ANSWER A
+        LEFT JOIN VOTE B
+        ON A.VOTE_ID = B.VOTE_ID
+        WHERE A.VOTE_ID = #{VOTEID}
+<!--        SELECT A.*, B.*-->
+<!--        FROM VOTE_1 A-->
+<!--        LEFT JOIN VOTEANSWER_1 B-->
+<!--        ON A.VOTEID = B.VOTEID-->
+<!--        WHERE A.VOTEID = 8-->
+<!--        #{VOTEID}-->
     </select>
+
+
     <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.Map">
         select vote_id from vote
     </select>
 </mapper>
+
+<!--        INSERT INTO VOTE-->
+<!--        (USER_ID,-->
+<!--        CONTENT,-->
+<!--        FIRST_ANSWER,-->
+<!--        SECOND_ANSWER,-->
+<!--        VOTE_ID,-->
+<!--        CREATE_AT-->
+<!--        )-->
+<!--        VALUES-->
+<!--        (-->
+<!--        0,-->
+<!--        '질문',-->
+<!--        '대답1',-->
+<!--        '대답2',-->
+<!--        VOTE_SEQ.NEXTVAL,-->
+<!--        sysdate-->
+<!--        )-->
+
+
+        <!--        LEFT JOIN VOTEANSWER_1 B-->
+        <!--        ON A.VOTEID = B.VOTEID-->
+        <!--        WHERE A.VOTEID = 7-->
+        <!--        SELECT A.*, B.*-->
+        <!--        FROM VOTE A-->
+        <!--        LEFT JOIN VOTE_ANSWER B-->
+        <!--        ON A.VOTE_ID = B.VOTE_ID-->
+        <!--        WHERE A.VOTE_ID = #{VOTEID}-->
+
+
+        <!--        INSERT INTO vote_1-->
+        <!--        ( USERID, VOTEID, CONTENT, FIRSTANSWER, SECONDANSWER, CREATEAT, UPDATEAT )-->
+        <!--        VALUES-->
+        <!--        (  21, vote_Seq.NEXTVAL ,'컨탠츠','컨1','컨2', sysdate, '')-->

@@ -1,7 +1,6 @@
 package guzzi.project.service;
 
 
-import org.springframework.stereotype.Service;
 import guzzi.project.DTO.votePostDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,7 +14,9 @@ public interface VoteService {
 
     public void createVote(@Param("vote") HashMap<String, Object> vote);
 
+//    Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;
     Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;
+
 
     HashMap<String, Object> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception;
 

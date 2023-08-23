@@ -2,19 +2,15 @@ package guzzi.project.service;
 
 
 import guzzi.project.DTO.votePostDto;
-
 import guzzi.project.exception.CustomException;
 import guzzi.project.mapper.VoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-
-import java.sql.SQLException;
 import java.util.Map;
-
 
 import static guzzi.project.exception.ErrorCode.VOTE_NOT_FOUND;
 
@@ -37,6 +33,8 @@ public class VoteServiceImpl implements VoteService{
     public Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception{
 
         Map<String, Object> vote = voteMapper.getVoteOne(paramMap);
+        System.out.println("vote");
+        System.out.println(vote);
 
         if(vote != null){
             return vote;
