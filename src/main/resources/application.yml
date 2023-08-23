@@ -27,7 +27,7 @@ spring:
     password: oracle
 mybatis:
   mapper-locations:
-    main/mapper/*Mapper.xml
+    mapper/*Mapper.xml
   type-aliases-package : guzzi.project.DTO
   configuration:
       map-underscore-to-camel-case: true

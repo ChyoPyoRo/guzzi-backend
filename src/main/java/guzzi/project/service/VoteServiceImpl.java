@@ -30,6 +30,7 @@ public class VoteServiceImpl implements VoteService{
     public void createVote(HashMap<String,Object> vote) {
         voteMapper.createVote(vote);
     }
+    @Override
     public Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception{
 
         Map<String, Object> vote = voteMapper.getVoteOne(paramMap);

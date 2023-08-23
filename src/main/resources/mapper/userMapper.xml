@@ -13,15 +13,11 @@
         WHERE ID = #{ID}
     </select>
     <insert id="login" parameterType="java.util.Map">
-
     </insert>
     <select id="findByUserId">
-
     </select>
     <select id="updateAccesstoken">
-
     </select>
-
 </mapper>
 <!--    <select id="findAll" resultType="User">-->
 <!--        SELECT * FROM users-->
