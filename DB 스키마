@@ -124,23 +124,21 @@ CREATE SEQUENCE VOTE_ANSWER_SEQ
 
 
   ----
-          INSERT INTO vote_1
-          ( USERID, VOTEID, CONTENT, FIRSTANSWER, SECONDANSWER, CREATE_AT, UPDATE_AT )
+          INSERT INTO vote
+          ( USER_ID, VOTE_ID, CONTENT, FIRST_ANSWER, SECOND_ANSWER, CREATE_AT, UPDATE_AT )
           VALUES
           (  '1', vote_Seq.NEXTVAL ,'컨탠츠','컨1','컨2', sysdate, '')
 ---
 
- INSERT INTO vote ( USERID, VOTEID, CONTENT, FIRSTANSWER, SECONDANSWER, CREATE_AT, UPDATE_AT ) VALUES (  '1', voteSeq.NEXTVAL ,'컨탠츠','컨1','컨2', sysdate, '')
+ INSERT INTO vote ( USER_ID, VOTE_ID, CONTENT, FIRST_ANSWER, SECOND_ANSWER, CREATE_AT, UPDATE_AT ) VALUES (  '1', voteSeq.NEXTVAL ,'컨탠츠','컨1','컨2', sysdate, '')
   ---
           INSERT INTO vote_answer
           (  VOTE_ID, VOTE_ANSWER_ID, FIRST_ANSWER_COUNT, SECOND_ANSWER_COUNT )
           VALUES
           ( '0', VOTE_ANSWER_SEQ.NEXTVAL , 0, 0)
   ---
-          insert into my_vote_answer
-          (MY_VOTE_ID, VOTEID, USERID, CHK)
-          values
-          (MY_VOTE_ANSWER_SEQ.NEXTVAL, 0, 1, 'first')
+          insert into my_vote_answer (MY_VOTE_ID, VOTE_ID, USER_ID, CHK)
+          values (MY_VOTE_ANSWER_SEQ.NEXTVAL, 0, 1, 'none');
 
 
           ----
@@ -159,6 +157,8 @@ SELECT A.vote_id, B.FIRST_ANSWER_COUNT FROM VOTE A LEFT JOIN VOTE_ANSWER B ON A.
 
 
 
+ALTER TABLE my_vote_answer ADD FIRST_RATIO Int NOT NULL;
+ALTER TABLE my_vote_answer ADD SECOND_RATIO Int NOT NULL;
 
 
 

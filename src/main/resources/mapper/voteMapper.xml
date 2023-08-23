@@ -27,16 +27,17 @@
             )
     </insert>
     <select id="getVoteOne" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM VOTE_ANSWER A LEFT JOIN VOTE B ON A.VOTE_ID = B.VOTE_ID WHERE A.VOTE_ID = 0
-<!--        SELECT A.*, B.*-->
-<!--        FROM VOTE_1 A-->
-<!--        LEFT JOIN VOTEANSWER_1 B-->
-<!--        ON A.VOTEID = B.VOTEID-->
-<!--        WHERE A.VOTEID = 8-->
-<!--        #{VOTEID}-->
+        SELECT *
+        FROM VOTE_ANSWER A
+        LEFT JOIN VOTE B
+        ON A.VOTE_ID = B.VOTE_ID
+        WHERE A.VOTE_ID = #{VOTEID}
     </select>
-    <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.Map">
-        select vote_id from vote
+    <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT *
+        FROM VOTE A
+        LEFT JOIN MY_VOTE_ANSWER B
+        ON A.VOTE_ID = B.VOTE_ID
     </select>
 </mapper>
 

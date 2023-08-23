@@ -46,8 +46,8 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public HashMap<String, Object> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception {
-        HashMap<String, Object> voteList = voteMapper.getVoteList(paramMap);
+    public List<Map<String, Object>> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception {
+        List<Map<String, Object>> voteList = voteMapper.getVoteList(paramMap);
         System.out.println("Service Imple voteList");
         System.out.println(voteList);
         if (voteList != null){

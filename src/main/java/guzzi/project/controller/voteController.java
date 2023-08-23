@@ -71,7 +71,7 @@ public class voteController {
 //        form : {VOTEID=0}
         Map<String, Object> resultMap = new HashMap<>();
         try{
-            HashMap<String, Object> voteList = voteService.getVoteList(paramMap);
+            List<Map<String, Object>> voteList = voteService.getVoteList(paramMap);
             resultMap.put("voteList", voteList );
         }catch (SQLException e){
             System.out.println(e);
