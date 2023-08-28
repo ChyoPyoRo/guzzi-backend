@@ -2,6 +2,7 @@ package guzzi.project.service;
 
 
 import guzzi.project.DTO.votePostDto;
+import guzzi.project.config.Pagination;
 import guzzi.project.exception.CustomException;
 import guzzi.project.mapper.VoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,20 @@ public class VoteServiceImpl implements VoteService{
     }
 
     @Override
-    public List<Map<String, Object>> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception {
-        List<Map<String, Object>> voteList = voteMapper.getVoteList(paramMap);
-        System.out.println("Service Imple voteList");
-        System.out.println(voteList);
+    public HashMap<String, Object> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception {
+//      return map 객체 생성
+        HashMap<String, Object> resMap = new HashMap<String, Object>();
+//      pagination
+        int getTotalVoteCnt = voteMapper.getTotalVoteCnt();
+        Pagination pagination = new Pagination(paramMap.get("page"),paramMap.get("size"), getTotalVoteCnt);
+        pagination.setTotalRecordCount(getTotalVoteCnt);
+//      vote list return
+        List<Map<String, Object>> voteList = voteMapper.getVoteList(pagination);
+        resMap.put("pagination",pagination);
+        resMap.put("voteList", voteList);
+
         if (voteList != null){
-            return voteList ;
+            return resMap;
         }else{
             throw new CustomException(VOTE_NOT_FOUND);
         }

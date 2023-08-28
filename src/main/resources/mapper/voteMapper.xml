@@ -27,50 +27,49 @@
             )
     </insert>
     <select id="getVoteOne" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT *
+                SELECT
+            A.FIRST_RATIO
+            , A.SECOND_RATIO
+            ,(A.FIRST_ANSWER_COUNT + A.SECOND_ANSWER_COUNT) as TOTAL_ANSWER_COUNT
+            , (SELECT NVL(CHK, 'none') FROM MY_VOTE_ANSWER
+                        WHERE USER_ID = 0 and VOTE_ID = B.VOTE_ID) AS CHK
+            , B.USER_ID
+            , B.VOTE_ID
+            , B.CONTENT
+            , B.FIRST_ANSWER
+            , B.SECOND_ANSWER
         FROM VOTE_ANSWER A
-        LEFT JOIN VOTE B
-        ON A.VOTE_ID = B.VOTE_ID
+            LEFT JOIN VOTE B
+            ON A.VOTE_ID = B.VOTE_ID
         WHERE A.VOTE_ID = #{VOTEID}
     </select>
     <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.HashMap">
-        SELECT *
-        FROM VOTE A
-        LEFT JOIN MY_VOTE_ANSWER B
-        ON A.VOTE_ID = B.VOTE_ID
+        SELECT
+<!--        B.ROW_NUM,-->
+            D.FIRST_RATIO
+            , D.SECOND_RATIO
+            , (D.FIRST_ANSWER_COUNT + D.SECOND_ANSWER_COUNT) as TOTAL_ANSWER_COUNT
+            , NVL(
+                    (SELECT CHK FROM MY_VOTE_ANSWER WHERE USER_ID = 0 and VOTE_ID = B.VOTE_ID)
+                    , 'none'
+                ) AS CHK
+            , B.USER_ID
+            , B.VOTE_ID
+            , B.CONTENT
+            , B.FIRST_ANSWER
+            , B.SECOND_ANSWER
+        FROM VOTE_ANSWER D
+            LEFT JOIN (
+                    SELECT
+                    ROW_NUMBER() OVER (ORDER BY C.CREATE_AT DESC) AS ROW_NUM
+                    , C.*
+                    FROM VOTE C) B
+                    ON D.VOTE_ID = B.VOTE_ID
+        WHERE 1 = 1
+        AND B.ROW_NUM > #{startIdx}
+        AND B.ROW_NUM <![CDATA[ <= ]]> #{endIdx}
+    </select>
+    <select id="getTotalVoteCnt" resultType="int">
+        select count(*) from vote
     </select>
 </mapper>
-
-<!--        INSERT INTO VOTE-->
-<!--        (USER_ID,-->
-<!--        CONTENT,-->
-<!--        FIRST_ANSWER,-->
-<!--        SECOND_ANSWER,-->
-<!--        VOTE_ID,-->
-<!--        CREATE_AT-->
-<!--        )-->
-<!--        VALUES-->
-<!--        (-->
-<!--        0,-->
-<!--        '질문',-->
-<!--        '대답1',-->
-<!--        '대답2',-->
-<!--        VOTE_SEQ.NEXTVAL,-->
-<!--        sysdate-->
-<!--        )-->
-
-
-        <!--        LEFT JOIN VOTEANSWER_1 B-->
-        <!--        ON A.VOTEID = B.VOTEID-->
-        <!--        WHERE A.VOTEID = 7-->
-        <!--        SELECT A.*, B.*-->
-        <!--        FROM VOTE A-->
-        <!--        LEFT JOIN VOTE_ANSWER B-->
-        <!--        ON A.VOTE_ID = B.VOTE_ID-->
-        <!--        WHERE A.VOTE_ID = #{VOTEID}-->
-
-
-        <!--        INSERT INTO vote_1-->
-        <!--        ( USERID, VOTEID, CONTENT, FIRSTANSWER, SECONDANSWER, CREATEAT, UPDATEAT )-->
-        <!--        VALUES-->
-        <!--        (  21, vote_Seq.NEXTVAL ,'컨탠츠','컨1','컨2', sysdate, '')-->

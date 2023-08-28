@@ -18,7 +18,7 @@ public interface VoteService {
     Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;
 
 
-    List<Map<String, Object>> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception;
+    HashMap<String, Object> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception;
 
 
 }

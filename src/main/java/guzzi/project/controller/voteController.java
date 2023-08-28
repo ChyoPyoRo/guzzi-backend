@@ -49,7 +49,7 @@ public class voteController {
         try {
             Map<String, Object> vote =
                     voteService.getVoteOne(paramMap);
-            resultMap.put("vote", vote);
+            resultMap.put("VOTE", vote);
 
 
         }catch (SQLException e){
@@ -66,19 +66,21 @@ public class voteController {
     }
 
     @GetMapping("/votes")
-    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception{
-        System.out.println(paramMap);
-//        form : {VOTEID=0}
-        Map<String, Object> resultMap = new HashMap<>();
-        try{
-            List<Map<String, Object>> voteList = voteService.getVoteList(paramMap);
-            resultMap.put("voteList", voteList );
+    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
+
+        HashMap<String, Object> voteList = null;
+
+        try {
+            voteList = voteService.getVoteList(paramMap);
+
         }catch (SQLException e){
             System.out.println(e);
-        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch(Exception e){
             System.out.println(e);
+            return ResponseEntity.status(404).body(e.toString());
         }
-        return ResponseEntity.ok().body(resultMap);
+        return ResponseEntity.ok().body(voteList);
 
     }
 
