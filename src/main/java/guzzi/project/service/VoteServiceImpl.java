@@ -28,8 +28,12 @@ public class VoteServiceImpl implements VoteService{
         return voteMapper.findVoteAll();
     }
     @Override
-    public void createVote(HashMap<String,Object> vote) {
-        voteMapper.createVote(vote);
+    public void createVote(Map<String,Object> vote) {
+        //나중에 security 되면 user_id 값 수정
+        vote.put("USER_ID", 1);
+        System.out.println(vote);
+        Map<String, Object> result = voteMapper.createVote(vote);
+        System.out.println((result));
     }
     @Override
     public Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception{

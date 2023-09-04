@@ -16,6 +16,6 @@ public interface VoteMapper {
     int getTotalVoteCnt();
     public List<votePostDto> findVoteAll();
     //@param("변수명") 타입 변수
-    public void createVote(@Param("vote") HashMap<String,Object> vote);
+    public Map<String,Object> createVote(@Param("vote") Map<String,Object> vote);
 
 }

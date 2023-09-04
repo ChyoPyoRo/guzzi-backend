@@ -12,7 +12,7 @@ import java.util.Map;
 public interface VoteService {
     public List<votePostDto> findVoteAll();
 
-    public void createVote(@Param("vote") HashMap<String, Object> vote);
+    public void createVote(@Param("vote") Map<String, Object> vote);
 
 //    Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;
     Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;

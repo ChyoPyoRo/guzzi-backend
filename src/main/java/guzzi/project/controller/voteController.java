@@ -22,17 +22,10 @@ public class voteController {
     VoteServiceImpl voteService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @PostMapping("/createvote")
-    public ResponseEntity<?> createVote(@RequestBody votePostDto votePost){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //이 부분은 나중에 service로 옮겨야 할 지두
-        HashMap<String, Object> vote = new HashMap<String, Object>();
-        vote.put("VOTE_ID", votePost.getVOTE_ID());
-        vote.put("USER_ID", votePost.getUSER_ID());
-        vote.put("CREATE_AT", votePost.getCREATE_AT());
-        vote.put("CONTENT", votePost.getCONTENT());
-        vote.put("FIRST_ANSWER", votePost.getFIRST_ANSWER());
-        vote.put("SECOND_ANSWER", votePost.getSECOND_ANSWER());
+    @PostMapping("/create")
+    public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote){
+
+        System.out.println(vote);
         //여기서 보내고 나서
         voteService.createVote(vote);
         //여기서 결과 조회해서 보낸다.

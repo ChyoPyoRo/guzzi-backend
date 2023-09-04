@@ -15,15 +15,15 @@
     </select>
     <insert id="createVote">
         INSERT INTO VOTE
-            (USER_ID, CONTENT,
-            FIRST_ANSWER,
-            SECOND_ANSWER)
+            (user_id, content,
+            first_answer,
+            second_answer, )
         VALUES
             (
              #{vote.USER_ID},
-             #{vote.CONTENT},
-             #{vote.FIRST_ANSWER},
-             #{vote.SECOND_ANSWER}
+             #{vote.CONTENT, jdbcType=VARCHAR},
+             #{vote.FIRST_ANSWER, jdbcType=VARCHAR},
+             #{vote.SECOND_ANSWER, jdbcType=VARCHAR}
             )
     </insert>
     <select id="getVoteOne" parameterType="java.util.Map" resultType="java.util.Map">

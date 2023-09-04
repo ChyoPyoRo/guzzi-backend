@@ -11,9 +11,9 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 public class votePostDto {
-    private Number USER_ID;
-    private Number VOTE_ID;
-    private Timestamp CREATE_AT;
+//    private Number USER_ID;
+//    private Number VOTE_ID;
+//    private Timestamp CREATE_AT;
     private String CONTENT;
     private String FIRST_ANSWER;
     private String SECOND_ANSWER;
