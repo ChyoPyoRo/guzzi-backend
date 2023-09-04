@@ -60,7 +60,7 @@ public class voteController {
 
     @GetMapping("/votes")
     public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
-
+        // param에 쿠키에서 가져온 userId 값 추가해줘야 함.
         HashMap<String, Object> voteList = null;
 
         try {

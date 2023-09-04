@@ -8,16 +8,38 @@
         VALUES
         (  USER_SEQ.NEXTVAL , #{ID}, #{PASSWORD}, sysdate)
     </insert>
+    <insert id="createTokenTable" parameterType="java.util.Map">
+        INSERT INTO TOKEN
+        ( USER_ID, TOKEN_ID, REFRESH_TOKEN, CREATE_AT )
+        VALUES
+        (
+        #{USER_ID}
+        ,  TOKEN_SEQ.NEXTVAL
+        , 'INIT'
+        , sysdate
+        )
+    </insert>
     <select id="idChk" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(*) FROM USERS
         WHERE ID = #{ID}
     </select>
-    <insert id="login" parameterType="java.util.Map">
-    </insert>
+    <select id="getUserData" parameterType="guzzi.project.DTO.userDto" resultType="java.util.Map">
+        SELECT NVL(ID,'N') AS ID,
+                NVL(PASSWORD, 'N') AS PASSWORD,
+                USER_ID
+        FROM USERS
+        WHERE 1=1
+        AND ID = #{ID}
+<!--        AND PASSWORD = #{PASSWORD}-->
+    </select>
     <select id="findByUserId">
     </select>
-    <select id="updateAccesstoken">
-    </select>
+    <update id="updateToken" parameterType="java.util.Map">
+        UPDATE TOKEN
+        SET
+        REFRESH_TOKEN = #{refreshToken}
+        WHERE USER_ID = #{USER_ID}
+    </update>
 </mapper>
 <!--    <select id="findAll" resultType="User">-->
 <!--        SELECT * FROM users-->
