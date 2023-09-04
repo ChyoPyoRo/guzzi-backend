@@ -1,11 +1,13 @@
 package guzzi.project.controller;
 
 import guzzi.project.DTO.userDto;
+import guzzi.project.security.SecurityService;
 import guzzi.project.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -22,9 +23,13 @@ import java.util.function.Supplier;
 @RestController
 public class userController {
 //    private final static String DEFAULT_PATH = "guzzi.project";
-
+    @Value("${JWT.SECRET.KEY}")
+    private String JWT_SECRET_KEY;
     @Autowired
     UserServiceImpl userServiceImpl;
+
+    @Autowired
+    SecurityService securityService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -42,16 +47,9 @@ public class userController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody userDto signupData) throws SQLException, Exception {
-//
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("ID",signupData.getID());
-        paramMap.put("PASSWORD",signupData.getPASSWORD());
-               //id, pw null 여부 확인
 
         try {
-//            System.out.println("Controller");
-//            System.out.println(paramMap);
-            userServiceImpl.signup(paramMap);
+            userServiceImpl.signup(signupData);
 
         }catch (SQLException e){
             System.out.println(e);
@@ -67,27 +65,34 @@ public class userController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody userDto loginData) throws SQLException, Exception {
-//        System.out.println(loginData.getID());
-//        System.out.println(loginData.getPASSWORD());
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Game", "Chess");
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        String ID = loginData.getID();
-        String PASSWORD = loginData.getPASSWORD();
-        //id, pw null 여부 확인
+    public ResponseEntity<?> login(@RequestBody userDto loginData) throws SQLException, Exception {
 
+        Map<String, Object> result = userServiceImpl.login(loginData);
+
+
+
+        String refreshToken = (String) result.get("refreshToken");
+        String accessToken = (String) result.get("accessToken");
+        result.remove("refreshToken");
+        result.remove("accessToken");
+
+        System.out.println(result);
+
+
+        HttpHeaders headers = new HttpHeaders();
         try {
 
-            paramMap.put("ID",ID);
-            paramMap.put("PASSWORD",PASSWORD);
+            headers.add("Set-Cookie", "access_token=" + accessToken);
+            headers.add("Set-Cookie", "refresh_token=" + refreshToken);
 
         } catch(Exception e){
             logger.error((Supplier<String>) e);
         }
-        return ResponseEntity.ok()
+        ResponseEntity<?> responseEntity = ResponseEntity.ok()
                 .headers(headers)
-                .body(paramMap);
+                .body(result);
+        return responseEntity;
+
 
     }
 

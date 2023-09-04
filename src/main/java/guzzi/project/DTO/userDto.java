@@ -6,7 +6,16 @@ public class userDto {
     private String ID;
     private String PASSWORD;
     private Timestamp CREATE_AT;
-    private int id;
+    private int USER_ID;
+
+
+    public int getUSER_ID() {
+        return USER_ID;
+    }
+
+    public void setUSER_ID(int USER_ID) {
+        this.USER_ID = USER_ID;
+    }
 
     public String getID() {
         return ID;

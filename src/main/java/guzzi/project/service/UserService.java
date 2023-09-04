@@ -1,19 +1,17 @@
 package guzzi.project.service;
 
-import guzzi.project.vo.UserVO;
-import org.springframework.stereotype.Service;
+import guzzi.project.DTO.userDto;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 
 public interface UserService {
 
 
-     void signup(Map<String, Object> paramMap) throws SQLException, Exception;
+     void signup(userDto paramMap) throws SQLException, Exception;
 
-    void login(Map<String,Object> paramMap) throws SQLException, Exception;
+    Map<String, Object> login(userDto loginData) throws SQLException, Exception;
 
 
 
