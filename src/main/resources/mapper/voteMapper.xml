@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="guzzi.project.mapper.VoteMapper">
-    <select id="findVoteAll" resultType="guzzi.project.DTO.votePostDto">
+    <select id="findVoteAll" resultType="java.util.Map">
         SELECT
             USER_ID,
             VOTE_ID,
@@ -13,35 +13,71 @@
         FROM
             vote
     </select>
-    <insert id="createVote">
+    <insert id="createVote" parameterType="java.util.Map">
         INSERT INTO VOTE
             (user_id, content,
             first_answer,
-            second_answer, )
+            second_answer, vote_id, create_at)
         VALUES
             (
-             #{vote.USER_ID},
-             #{vote.CONTENT, jdbcType=VARCHAR},
-             #{vote.FIRST_ANSWER, jdbcType=VARCHAR},
-             #{vote.SECOND_ANSWER, jdbcType=VARCHAR}
+             #{USER_ID},
+             #{CONTENT, jdbcType=VARCHAR},
+             #{FIRST_ANSWER, jdbcType=VARCHAR},
+             #{SECOND_ANSWER, jdbcType=VARCHAR},
+             VOTE_SEQ.NEXTVAL,
+             sysdate
+            )
+    </insert>
+    <select id = "recentVote" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            VOTE_ID
+        FROM
+            VOTE
+        WHERE
+            CONTENT = #{CONTENT, jdbcType=VARCHAR}
+        AND
+            FIRST_ANSWER = #{FIRST_ANSWER, jdbcType=VARCHAR}
+        AND
+            SECOND_ANSWER = #{SECOND_ANSWER, jdbcType=VARCHAR}
+        ORDER BY
+            create_at desc
+    </select>
+    <insert id="create_vote_answer" parameterType="java.util.Map">
+        INSERT INTO VOTE_ANSWER
+            (
+             vote_id, vote_answer_id
+            )
+        VALUES
+            (
+             #{VOTE_ID},
+            VOTE_ANSWER_SEQ.NEXTVAL
             )
     </insert>
     <select id="getVoteOne" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+        A.FIRST_RATIO
+         , A.SECOND_RATIO
+         ,(A.FIRST_ANSWER_COUNT + A.SECOND_ANSWER_COUNT) as TOTAL_ANSWER_COUNT
+         , (SELECT NVL(CHK, 'none') FROM MY_VOTE_ANSWER
+            WHERE USER_ID = 0 and VOTE_ID = B.VOTE_ID) AS CHK
+         , B.USER_ID
+         , B.VOTE_ID
+         , B.CONTENT
+         , B.FIRST_ANSWER
+         , B.SECOND_ANSWER
+    FROM VOTE_ANSWER A
+             LEFT JOIN VOTE B
+                       ON A.VOTE_ID = B.VOTE_ID
+    WHERE A.VOTE_ID = #{VOTE_ID}
+</select>
+    <select id="getVoteOneRecent" parameterType="java.util.Map" resultType="java.util.Map">
                 SELECT
-            A.FIRST_RATIO
-            , A.SECOND_RATIO
-            ,(A.FIRST_ANSWER_COUNT + A.SECOND_ANSWER_COUNT) as TOTAL_ANSWER_COUNT
-            , (SELECT NVL(CHK, 'none') FROM MY_VOTE_ANSWER
-                        WHERE USER_ID = 0 and VOTE_ID = B.VOTE_ID) AS CHK
-            , B.USER_ID
-            , B.VOTE_ID
-            , B.CONTENT
-            , B.FIRST_ANSWER
-            , B.SECOND_ANSWER
-        FROM VOTE_ANSWER A
-            LEFT JOIN VOTE B
-            ON A.VOTE_ID = B.VOTE_ID
-        WHERE A.VOTE_ID = #{VOTEID}
+            USER_ID, VOTE_ID,
+            CONTENT,
+            FIRST_ANSWER,
+            SECOND_ANSWER
+        FROM  VOTE
+        WHERE VOTE_ID = #{VOTE_ID}
     </select>
     <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.HashMap">
         SELECT
@@ -71,5 +107,45 @@
     </select>
     <select id="getTotalVoteCnt" resultType="int">
         select count(*) from vote
+    </select>
+    <insert id="create_my_vote_answer" parameterType="java.util.Map">
+        INSERT INTO MY_VOTE_ANSWER(
+            MY_VOTE_ID, VOTE_ID, USER_ID, CHK
+        )
+        VALUES (
+                   MY_VOTE_ANSWER_SEQ.NEXTVAL, #{VOTE_ID}, #{USER_ID}, #{CHK,jdbcType=VARCHAR }
+               )
+    </insert>
+    <select id="findOneVote"  parameterType="java.util.Map" resultType="java.util.HashMap" >
+        SELECT *
+        FROM VOTE_ANSWER
+        WHERE VOTE_ID = #{VOTE_ID}
+    </select>
+    <update id="updateVoteAnswer" parameterType="java.util.Map">
+        UPDATE VOTE_ANSWER
+        SET
+            FIRST_ANSWER_COUNT = #{FIRST_ANSWER_COUNT},
+            SECOND_ANSWER_COUNT = #{SECOND_ANSWER_COUNT},
+            FIRST_RATIO = #{FIRST_RATIO},
+            SECOND_RATIO = #{SECOND_RATIO}
+        WHERE
+            VOTE_ID = #{VOTE_ID}
+    </update>
+    <update id ="update_my_vote_answer" parameterType="java.util.Map">
+        UPDATE MY_VOTE_ANSWER
+        SET
+            CHK = #{CHK}
+        WHERE
+            VOTE_ID = #{VOTE_ID}
+        AND
+            USER_ID = #{USER_ID}
+    </update>
+    <select id="findMyVote" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT *
+        FROM MY_VOTE_ANSWER
+        WHERE
+            VOTE_ID = #{VOTE_ID}
+        AND
+            USER_ID = #{USER_ID}
     </select>
 </mapper>

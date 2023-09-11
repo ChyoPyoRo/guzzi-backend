@@ -23,13 +23,16 @@ public class voteController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/create")
-    public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote){
-
-        System.out.println(vote);
-        //여기서 보내고 나서
-        voteService.createVote(vote);
-        //여기서 결과 조회해서 보낸다.
-        List<votePostDto> result = voteService.findVoteAll();
+    public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote )throws Exception{
+        Map<String, Object> result;
+        try{
+            System.out.println(vote);
+            //여기서 생성을 하고 나서 값을 돌려 보낼 만한게 없음
+            result = voteService.createVote(vote);
+        } catch(Exception e){
+            System.out.println(e);
+            return ResponseEntity.status(404).body(e.toString());
+        }
         return ResponseEntity.ok().body(result);
 
     }
@@ -77,4 +80,22 @@ public class voteController {
 
     }
 
+    @PatchMapping("/vote")
+    public ResponseEntity<?> votePatch(@RequestParam Map<String, Object> paramMap, @RequestBody Map<String, Object> option) throws Exception{
+        Map<String, Object> result = null;
+        HashMap<String, Object> dataList = new HashMap<>();
+
+        try {
+            //데이터 저장하기
+            dataList.put("VOTE_ID", paramMap.get("VOTEID"));
+            dataList.put("CHK", option.get("option"));
+            dataList.put("USER_ID", 2);
+            //여기에서 login_required 확인 ( 나중에 추가 )
+            result = voteService.makeUserVote(dataList);
+            return ResponseEntity.ok().body(result);
+        }catch(Exception e){
+            System.out.println(e);
+            return ResponseEntity.status(404).body(e.toString());
+        }
+    }
 }

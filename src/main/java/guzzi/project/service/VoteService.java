@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface VoteService {
-    public List<votePostDto> findVoteAll();
+    public List<Map<String,Object>> findVoteAll();
 
-    public void createVote(@Param("vote") Map<String, Object> vote);
+    public Map<String, Object> createVote(@Param("vote") Map<String, Object> vote);
 
 //    Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;
     Map<String, Object> getVoteOne(Map<String, Object> paramMap) throws SQLException, Exception;
@@ -20,5 +20,5 @@ public interface VoteService {
 
     HashMap<String, Object> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception;
 
-
+    Map<String, Object> makeUserVote(HashMap<String, Object> paramMap) throws Exception;
 }
