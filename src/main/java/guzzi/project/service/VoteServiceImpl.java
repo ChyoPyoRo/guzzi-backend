@@ -29,8 +29,7 @@ public class VoteServiceImpl implements VoteService{
     }
     @Override
     public Map<String, Object> createVote(Map<String,Object> vote) {
-        //나중에 security 되면 user_id 값 수정
-        vote.put("USER_ID", 1);
+
         //vote_id는 VOTE_SEQ, create_at은 XML파일에 작성
         voteMapper.createVote(vote);
         //해당 vote와 같은 vote_id를 가지는 vote_answer를 생성

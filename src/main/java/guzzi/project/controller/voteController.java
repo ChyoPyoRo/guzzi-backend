@@ -28,8 +28,11 @@ public class voteController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/create")
-    public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote )throws Exception{
+    public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote, HttpServletRequest request )throws Exception{
         Map<String, Object> result;
+        Map<String,Object>   user = tokenValidation.TokenVal(request);
+        vote.put("USER_ID", user.get("USER_ID"));
+
         try{
             System.out.println(vote);
             //여기서 생성을 하고 나서 값을 돌려 보낼 만한게 없음
@@ -86,15 +89,17 @@ public class voteController {
     }
 
     @PatchMapping("/vote")
-    public ResponseEntity<?> votePatch(@RequestParam Map<String, Object> paramMap, @RequestBody Map<String, Object> option) throws Exception{
+    public ResponseEntity<?> votePatch(@RequestParam Map<String, Object> paramMap, @RequestBody Map<String, Object> option, HttpServletRequest request) throws Exception{
         Map<String, Object> result = null;
         HashMap<String, Object> dataList = new HashMap<>();
+        Map<String,Object>   user = tokenValidation.TokenVal(request);
 
         try {
             //데이터 저장하기
             dataList.put("VOTE_ID", paramMap.get("VOTEID"));
             dataList.put("CHK", option.get("option"));
-            dataList.put("USER_ID", 2);
+            dataList.put("USER_ID", user.get("USER_ID"));
+
             //여기에서 login_required 확인 ( 나중에 추가 )
             result = voteService.makeUserVote(dataList);
             return ResponseEntity.ok().body(result);
