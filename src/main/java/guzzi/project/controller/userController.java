@@ -2,7 +2,9 @@ package guzzi.project.controller;
 
 import guzzi.project.DTO.userDto;
 import guzzi.project.security.SecurityService;
+import guzzi.project.security.Token;
 import guzzi.project.service.UserServiceImpl;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -31,18 +35,13 @@ public class userController {
     @Autowired
     SecurityService securityService;
 
+    @Autowired
+    Token tokenValidation;
+
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
 //    https://velog.io/@joungeun/ResponseEntity-Http-Status -- ResponseEntity status 정리 블로그
-
-//    @GetMapping("/user/all")
-//    public @ResponseBody List<UserVO> findAllMemberBySelect(){
-//
-//        System.out.print("Get : /user/all");
-//        List<UserVO> list = userService.findAllMemberBySelect();
-//        System.out.print(list + "\n");
-//        return list;
-//    }
 
 
     @PostMapping("/signup")
@@ -76,8 +75,6 @@ public class userController {
         result.remove("refreshToken");
         result.remove("accessToken");
 
-        System.out.println(result);
-
 
         HttpHeaders headers = new HttpHeaders();
         try {
@@ -98,12 +95,68 @@ public class userController {
 
 
     @GetMapping("/isMe")
-    public void isMe()  throws SQLException, Exception {
+    public ResponseEntity<?> isMe(HttpServletRequest request)  throws SQLException, Exception {
+        /*
+        * 1. accessToken header에서 받은 후 user_id 반환 test용
+        *
+        * 2. access 만료되었으면 refresh 검증 후 access + refresh 재 반환
+        *
+        * - 사용시에는 컨트롤러에서 헤더값 파라미터 받아서 해당 로직 끌어다쓰기 -
+        * */
+        HttpHeaders headers = new HttpHeaders();
+        Map<String, Object> tokenResult;
+
+
+
+        try {
+            tokenResult = tokenValidation.accessVal(request);
+            Object tokens = tokenResult.get("token");
+            if (tokens != null){
+
+                String data = (String) tokens.toString();
+                Map<String, String> map = parseDataString(data);
+
+                String access_Token = map.get("accessToken");
+                String refresh_Token = map.get("refreshToken");
+
+                headers.add("Set-Cookie", "access_token=" + access_Token);
+                headers.add("Set-Cookie", "refresh_token=" + refresh_Token);
+                tokenResult.remove("token");
+
+            }
+
+        }catch (JwtException e){
+            System.out.println(e);
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        } catch(Exception e){
+            System.out.println(e);
+            return ResponseEntity.status(403).body(e.toString());
+        }
+
+        ResponseEntity<?> responseEntity = ResponseEntity.ok()
+                .headers(headers)
+                .body(tokenResult);
+        return responseEntity;
+
+
+
+
 
     }
 
-    @GetMapping("/refresh")
-    public void refresh()  throws SQLException, Exception {
-
+    public static Map<String, String> parseDataString(String data) {
+        // 문자열을 쉼표와 중괄호를 기준으로 분할하여 Map에 저장
+        Map<String, String> map = new HashMap<>();
+        String[] keyValuePairs = data.split(", ");
+        for (String pair : keyValuePairs) {
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2) {
+                map.put(keyValue[0], keyValue[1]);
+            }
+        }
+        return map;
     }
+
+
 }

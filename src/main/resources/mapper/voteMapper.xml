@@ -148,4 +148,11 @@
         AND
             USER_ID = #{USER_ID}
     </select>
+    <select id="isMyVote" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(*)
+        FROM VOTE
+        WHERE 1=1
+        AND VOTE_ID = #{VOTE_ID}
+        AND USER_ID = #{USER_ID}
+    </select>
 </mapper>

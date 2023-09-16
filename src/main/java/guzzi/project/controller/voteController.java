@@ -1,6 +1,6 @@
 package guzzi.project.controller;
 
-import guzzi.project.DTO.votePostDto;
+import guzzi.project.security.Token;
 import guzzi.project.service.VoteServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.logging.Logger;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -20,6 +20,11 @@ import java.util.Map;
 public class voteController {
     @Autowired
     VoteServiceImpl voteService;
+    @Autowired
+    Token tokenValidation;
+
+    @Autowired
+    userController UserController;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/create")
@@ -97,5 +102,27 @@ public class voteController {
             System.out.println(e);
             return ResponseEntity.status(404).body(e.toString());
         }
+    }
+
+
+
+    @GetMapping("/isMyVote")
+    public ResponseEntity<?> isMyVote(HttpServletRequest request, @RequestParam Map<String, Object> voteId)  throws SQLException, Exception {
+        Map<String,Boolean> isMyVote = new HashMap<>();
+        Map<String, Object> data = tokenValidation.TokenVal(request);
+        data.put("VOTE_ID",voteId.get("VOTE_ID"));
+
+        try{
+            Boolean result = voteService.isMyVote(data);
+            System.out.println(data);
+            System.out.println(result);
+            isMyVote.put("isMyVote", result);
+        } catch(Exception e){
+            System.out.println(e);
+            return ResponseEntity.status(404).body(e.toString());
+        }
+        return ResponseEntity.ok().body(isMyVote);
+
+
     }
 }

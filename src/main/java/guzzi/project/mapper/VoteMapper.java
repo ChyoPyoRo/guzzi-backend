@@ -1,11 +1,8 @@
 package guzzi.project.mapper;
 
-import guzzi.project.DTO.votePostDto;
 import guzzi.project.config.Pagination;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,4 +24,7 @@ public interface VoteMapper {
     public void updateVoteAnswer(Map<String , Object> paramMap);
     public void update_my_vote_answer(Map<String,Object>paramMap);
     Map<String,Object> findMyVote(Map<String,Object>paramMap);
+
+    int isMyVote(Map<String,Object> paramMap);
+
 }

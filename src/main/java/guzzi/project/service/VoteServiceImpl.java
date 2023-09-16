@@ -1,7 +1,6 @@
 package guzzi.project.service;
 
 
-import guzzi.project.DTO.votePostDto;
 import guzzi.project.config.Pagination;
 import guzzi.project.exception.CustomException;
 import guzzi.project.mapper.VoteMapper;
@@ -147,6 +146,21 @@ public class VoteServiceImpl implements VoteService{
         Map<String, Object> result = voteMapper.getVoteOne(paramMap);
         return result;
     }
+
+    @Override
+    public Boolean isMyVote(Map<String, Object> data) throws Exception {
+        int resultCnt = voteMapper.isMyVote(data);
+        Boolean result = null;
+        if(resultCnt == 1){
+            result = true;
+        }else {
+            result = false;
+        }
+        return result;
+    }
+
+
+
 
 
 }

@@ -75,18 +75,9 @@ public class UserServiceImpl implements UserService{
         */
 
 
-        // 3. refreshToken & accessToken 재발급
-        String subject = (String) loginResult.get("ID");
         String userId = String.valueOf(loginResult.get("USER_ID")) ;
-        String refreshToken = securityService.createToken(subject, ( 24 * 60 * 60 * 1000));
-        String accessToken = securityService.createToken(subject, (30 * 60 * 1000));
-
-        // 3.1 refreshToken DB에 저장
-        Map<String, Object> tokenInfo = new HashMap<>();
-        tokenInfo.put("refreshToken", refreshToken);
-        tokenInfo.put("accessToken", accessToken);
-        tokenInfo.put("USER_ID", userId);
-        userMapper.updateToken(tokenInfo);
+        // 3. refreshToken & accessToken 재발급
+        Map<String, Object> tokenInfo = updateAccessAndRefresh(userId);
 
 
         // 3.2 refreshToken, accessToken  return
@@ -99,13 +90,19 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public void updateAccesstoken() throws SQLException, Exception{
-//        1. refresh token 검증
-//        1.1 refresh token 예외처리
-//        2. token 에서 user 정보 추출
-//        3. 해당 user 정보로 accesstoken 생성
-//        4. 해당 user 정보로 refreshtoken 생성
-//        5. return
+    public Map<String, Object> updateAccessAndRefresh(String userId) throws SQLException, Exception{
+//     refreshToken & accessToken 재발급
+        String refreshToken = securityService.createToken(userId, ( 24 * 60 * 60 * 1000));
+        String accessToken = securityService.createToken(userId, (30 * 60 * 1000));
+
+//      refreshToken DB에 저장
+        Map<String, Object> tokenInfo = new HashMap<>();
+        tokenInfo.put("refreshToken", refreshToken);
+        tokenInfo.put("accessToken", accessToken);
+        tokenInfo.put("USER_ID", userId);
+        userMapper.updateToken(tokenInfo);
+
+        return tokenInfo;
 
     }
 

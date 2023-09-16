@@ -19,6 +19,6 @@ public interface UserService {
     public void findByUserId() throws SQLException, Exception;
 
     // access 만료 시 token 재발급을 위한 api
-    public void updateAccesstoken() throws SQLException, Exception;
+    public Map<String, Object> updateAccessAndRefresh(String user_id) throws SQLException, Exception;
 
 }

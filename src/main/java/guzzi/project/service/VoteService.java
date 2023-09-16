@@ -1,7 +1,6 @@
 package guzzi.project.service;
 
 
-import guzzi.project.DTO.votePostDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
@@ -21,4 +20,6 @@ public interface VoteService {
     HashMap<String, Object> getVoteList(Map<String, Object> paramMap) throws SQLException, Exception;
 
     Map<String, Object> makeUserVote(HashMap<String, Object> paramMap) throws Exception;
+    Boolean isMyVote(Map<String, Object> paramMap) throws Exception;
+
 }
