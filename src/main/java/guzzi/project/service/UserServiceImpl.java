@@ -14,8 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static guzzi.project.exception.ErrorCode.DUPLICATE_RESOURCE;
-import static guzzi.project.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static guzzi.project.exception.ErrorCode.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -38,14 +37,25 @@ public class UserServiceImpl implements UserService{
 //        1. 비밀번호 암호화 하기 (보류)
 //        2. 아이디 중복 확인
         int idChkResult = userMapper.idChk(signupData);
-        if(idChkResult != 0) {
-            throw new CustomException(DUPLICATE_RESOURCE);
-        }
+//        if(idChkResult != 0) {
+//             new Exception();
+//        }
+        try{
+            if(idChkResult != 0){
+                Exception e = new CustomException(DUPLICATE_RESOURCE); // 1. 예외 생성
+                throw e; // 2. 예외 던지기
+            }else{
 //        3. 회원가입
-        userMapper.signup(signupData);
+                userMapper.signup(signupData);
 //        4. 생성된 유저 정보로 token table insert
-        Map<String, Object> signupResult = userMapper.getUserData(signupData);
-        userMapper.createTokenTable(signupResult);
+                Map<String, Object> signupResult = userMapper.getUserData(signupData);
+                userMapper.createTokenTable(signupResult);
+            }
+        }catch (Exception e){
+            System.out.println("??????????????????");
+            System.out.println(e);
+            throw new CustomException(INVALID_ACCESS_TOKEN);
+        }
 
     }
 

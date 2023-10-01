@@ -81,14 +81,14 @@ public class voteController {
     public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
         Map<String, Object> USER_ID = getTokenValidation.TokenVal(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
-        System.out.println("Controller");
-        System.out.println(paramMap);
+
         HashMap<String, Object> voteList = null;
 
         try {
             voteList = voteService.getVoteList(paramMap);
 
-        }catch (SQLException e){
+
+        } catch (SQLException e){
             System.out.println(e);
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e){

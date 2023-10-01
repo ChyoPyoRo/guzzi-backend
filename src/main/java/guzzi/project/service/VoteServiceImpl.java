@@ -62,22 +62,25 @@ public class VoteServiceImpl implements VoteService{
         int getTotalVoteCnt = voteMapper.getTotalVoteCnt();
         Pagination pagination = new Pagination(paramMap.get("page"),paramMap.get("size"), getTotalVoteCnt, paramMap.get("USER_ID"));
         pagination.setTotalRecordCount(getTotalVoteCnt);
-//        =================================================================================
-        System.out.println("Controller");
-        System.out.println(pagination);
-//        =================================================================================
 //      vote list return
         List<Map<String, Object>> voteList = voteMapper.getVoteList(pagination);
         resMap.put("pagination",pagination);
         resMap.put("voteList", voteList);
 
-        if (voteList != null){
+//        else{
+//            throw new CustomException(VOTE_NOT_FOUND);
+//        }
+        try{
+            if (voteList != null){
             return resMap;
-        }else{
+            }
+        }catch (CustomException e){
             throw new CustomException(VOTE_NOT_FOUND);
         }
 
+            return resMap;
     }
+
     @Override
     public Map<String,Object> makeUserVote(HashMap<String, Object> paramMap) throws Exception{
         //my_vote_answer 생성
