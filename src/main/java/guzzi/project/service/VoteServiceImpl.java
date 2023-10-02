@@ -60,20 +60,27 @@ public class VoteServiceImpl implements VoteService{
         HashMap<String, Object> resMap = new HashMap<String, Object>();
 //      pagination
         int getTotalVoteCnt = voteMapper.getTotalVoteCnt();
-        Pagination pagination = new Pagination(paramMap.get("page"),paramMap.get("size"), getTotalVoteCnt);
+        Pagination pagination = new Pagination(paramMap.get("page"),paramMap.get("size"), getTotalVoteCnt, paramMap.get("USER_ID"));
         pagination.setTotalRecordCount(getTotalVoteCnt);
 //      vote list return
         List<Map<String, Object>> voteList = voteMapper.getVoteList(pagination);
         resMap.put("pagination",pagination);
         resMap.put("voteList", voteList);
 
-        if (voteList != null){
+//        else{
+//            throw new CustomException(VOTE_NOT_FOUND);
+//        }
+        try{
+            if (voteList != null){
             return resMap;
-        }else{
+            }
+        }catch (CustomException e){
             throw new CustomException(VOTE_NOT_FOUND);
         }
 
+            return resMap;
     }
+
     @Override
     public Map<String,Object> makeUserVote(HashMap<String, Object> paramMap) throws Exception{
         //my_vote_answer 생성
@@ -121,6 +128,7 @@ public class VoteServiceImpl implements VoteService{
                     vote.replace("FIRST_ANSWER_COUNT", first_answer);
                     second_answer += 1;
                     vote.replace("SECOND_ANSWER_COUNT", second_answer);
+
                 }
             }
         }

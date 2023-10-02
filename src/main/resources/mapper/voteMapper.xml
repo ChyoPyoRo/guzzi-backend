@@ -59,7 +59,7 @@
          , A.SECOND_RATIO
          ,(A.FIRST_ANSWER_COUNT + A.SECOND_ANSWER_COUNT) as TOTAL_ANSWER_COUNT
          , (SELECT NVL(CHK, 'none') FROM MY_VOTE_ANSWER
-            WHERE USER_ID = 0 and VOTE_ID = B.VOTE_ID) AS CHK
+            WHERE USER_ID = #{USER_ID} and VOTE_ID = B.VOTE_ID) AS CHK
          , B.USER_ID
          , B.VOTE_ID
          , B.CONTENT
@@ -71,24 +71,21 @@
     WHERE A.VOTE_ID = #{VOTE_ID}
 </select>
     <select id="getVoteOneRecent" parameterType="java.util.Map" resultType="java.util.Map">
-                SELECT
-            USER_ID, VOTE_ID,
-            CONTENT,
-            FIRST_ANSWER,
-            SECOND_ANSWER
+        SELECT
+        USER_ID, VOTE_ID,
+        CONTENT,
+        FIRST_ANSWER,
+        SECOND_ANSWER
         FROM  VOTE
         WHERE VOTE_ID = #{VOTE_ID}
     </select>
     <select id="getVoteList" parameterType="java.util.Map" resultType="java.util.HashMap">
         SELECT
-<!--        B.ROW_NUM,-->
             D.FIRST_RATIO
             , D.SECOND_RATIO
             , (D.FIRST_ANSWER_COUNT + D.SECOND_ANSWER_COUNT) as TOTAL_ANSWER_COUNT
-            , NVL(
-                    (SELECT CHK FROM MY_VOTE_ANSWER WHERE USER_ID = 0 and VOTE_ID = B.VOTE_ID)
-                    , 'none'
-                ) AS CHK
+            , (SELECT CHK FROM MY_VOTE_ANSWER WHERE USER_ID = #{USER_ID} and VOTE_ID = B.VOTE_ID)
+                  AS CHK
             , B.USER_ID
             , B.VOTE_ID
             , B.CONTENT

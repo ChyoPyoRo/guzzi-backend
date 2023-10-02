@@ -25,12 +25,16 @@ public class voteController {
 
     @Autowired
     userController UserController;
+
+    @Autowired
+    Token getTokenValidation;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/create")
     public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote, HttpServletRequest request )throws Exception{
         Map<String, Object> result;
-        Map<String,Object>   user = tokenValidation.TokenVal(request);
+        Map<String, Object> user = getTokenValidation.accessVal(request);
         vote.put("USER_ID", user.get("USER_ID"));
 
         try{
@@ -47,14 +51,16 @@ public class voteController {
 
 
     @GetMapping("/vote")
-    public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
+    public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
+        Map<String, Object> USER_ID = getTokenValidation.accessVal(request);
+        paramMap.put("USER_ID", USER_ID.get("USER_ID"));
+
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             Map<String, Object> vote =
                     voteService.getVoteOne(paramMap);
             resultMap.put("VOTE", vote);
-
 
         }catch (SQLException e){
             System.out.println(e);
@@ -70,14 +76,17 @@ public class voteController {
     }
 
     @GetMapping("/votes")
-    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
-        // param에 쿠키에서 가져온 userId 값 추가해줘야 함.
+    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
+        Map<String, Object> USER_ID = getTokenValidation.accessVal(request);
+        paramMap.put("USER_ID", USER_ID.get("USER_ID"));
+
         HashMap<String, Object> voteList = null;
 
         try {
             voteList = voteService.getVoteList(paramMap);
 
-        }catch (SQLException e){
+
+        } catch (SQLException e){
             System.out.println(e);
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e){
@@ -92,13 +101,14 @@ public class voteController {
     public ResponseEntity<?> votePatch(@RequestParam Map<String, Object> paramMap, @RequestBody Map<String, Object> option, HttpServletRequest request) throws Exception{
         Map<String, Object> result = null;
         HashMap<String, Object> dataList = new HashMap<>();
-        Map<String,Object>   user = tokenValidation.TokenVal(request);
+        Map<String,Object>   user = tokenValidation.accessVal(request);
 
         try {
             //데이터 저장하기
             dataList.put("VOTE_ID", paramMap.get("VOTEID"));
             dataList.put("CHK", option.get("option"));
             dataList.put("USER_ID", user.get("USER_ID"));
+
 
             //여기에서 login_required 확인 ( 나중에 추가 )
             result = voteService.makeUserVote(dataList);
@@ -114,7 +124,7 @@ public class voteController {
     @GetMapping("/isMyVote")
     public ResponseEntity<?> isMyVote(HttpServletRequest request, @RequestParam Map<String, Object> voteId)  throws SQLException, Exception {
         Map<String,Boolean> isMyVote = new HashMap<>();
-        Map<String, Object> data = tokenValidation.TokenVal(request);
+        Map<String, Object> data = tokenValidation.accessVal(request);
         data.put("VOTE_ID",voteId.get("VOTE_ID"));
 
         try{

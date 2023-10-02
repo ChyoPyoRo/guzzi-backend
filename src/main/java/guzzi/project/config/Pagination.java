@@ -8,11 +8,22 @@ public class Pagination {
     private int endIdx;
     private int totalPages;
 
+    public int getUSER_ID() {
+        return USER_ID;
+    }
 
-    public Pagination(Object page, Object size, int voteTotalCnt){
+    public void setUSER_ID(int USER_ID) {
+        this.USER_ID = USER_ID;
+    }
+
+    private int USER_ID;
+
+
+    public Pagination(Object page, Object size, int voteTotalCnt, Object user_id){
 
         int Page = Integer.parseInt((String) page);
         int Size = Integer.parseInt((String) size);
+        int USER_ID = Integer.parseInt((String) user_id);
 
         if ( Page > (voteTotalCnt-1) / Size + 1){
             Page =  (voteTotalCnt-1) / Size + 1;
@@ -24,6 +35,7 @@ public class Pagination {
         this.totalPages = (voteTotalCnt-1) / Size + 1;
         this.page = Page;
         this.size = Size;
+        this.USER_ID = USER_ID;
 
     }
     public void setTotalRecordCount(int voteTotalCnt) {
