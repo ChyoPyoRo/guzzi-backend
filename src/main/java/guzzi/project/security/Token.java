@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import static guzzi.project.exception.ErrorCode.INVALID_ACCESS_TOKEN;
 import static guzzi.project.exception.ErrorCode.INVALID_REFRESH_TOKEN;
 
 @Service
@@ -133,6 +134,7 @@ public class Token {
 
         }catch (ExpiredJwtException A){
             System.out.println("access token이 만료되었습니다.");
+            throw new CustomException(INVALID_ACCESS_TOKEN);
 
         }catch (JwtException A) {
             System.out.println("access token 검증에 실패하였습니다.");

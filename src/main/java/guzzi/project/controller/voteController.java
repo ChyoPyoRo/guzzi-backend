@@ -26,6 +26,10 @@ public class voteController {
 
     @Autowired
     userController UserController;
+
+    @Autowired
+    Token getTokenValidation;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/create")
@@ -48,7 +52,10 @@ public class voteController {
 
 
     @GetMapping("/vote")
-    public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
+    public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
+        Map<String, Object> USER_ID = getTokenValidation.TokenVal(request);
+        paramMap.put("USER_ID", USER_ID.get("USER_ID"));
+
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
@@ -71,8 +78,11 @@ public class voteController {
     }
 
     @GetMapping("/votes")
-    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap) throws SQLException, Exception {
-        // param에 쿠키에서 가져온 userId 값 추가해줘야 함.
+    public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
+        Map<String, Object> USER_ID = getTokenValidation.TokenVal(request);
+        paramMap.put("USER_ID", USER_ID.get("USER_ID"));
+        System.out.println("Controller");
+        System.out.println(paramMap);
         HashMap<String, Object> voteList = null;
 
         try {
@@ -100,6 +110,7 @@ public class voteController {
             dataList.put("VOTE_ID", paramMap.get("VOTEID"));
             dataList.put("CHK", option.get("option"));
             dataList.put("USER_ID", user.get("USER_ID"));
+
 
             //여기에서 login_required 확인 ( 나중에 추가 )
             result = voteService.makeUserVote(dataList);
