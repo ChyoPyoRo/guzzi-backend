@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static guzzi.project.exception.ErrorCode.INVALID_ACCESS_TOKEN;
-import static guzzi.project.exception.ErrorCode.INVALID_REFRESH_TOKEN;
+import static guzzi.project.exception.ErrorCode.*;
 
 @Service
 public class Token {
@@ -41,6 +40,20 @@ public class Token {
         Map<String, Object> tokenInfo;
         String user_id;
 
+//        System.out.println("USER_ID");
+//        System.out.println(USER_ID);      // {}
+//        System.out.println("2🫥");
+
+//        System.out.println(request.getCookies()); // null
+
+        if(request.getCookies() == null){
+            throw new CustomException(TOKEN_NOT_FOUND);
+        }
+
+
+
+
+
         // cookie parsing
         Map<String, String> tokens = cookieParser(request);
 
@@ -63,8 +76,8 @@ public class Token {
 
 
         }catch (JwtException A) {
-            System.out.println("access token 검증에 실패하였습니다.");
-            throw new RuntimeException(A);
+            System.out.println("token 검증에 실패하였습니다.");
+            throw new CustomException(MISMATCH_REFRESH_TOKEN);
         }
 
         USER_ID.put("USER_ID", user_id);
@@ -92,7 +105,7 @@ public class Token {
         }catch (JwtException R) {
 
             System.out.println("refresh token 검증에 실패하였습니다.");
-            throw new RuntimeException(R);
+            throw new CustomException(MISMATCH_REFRESH_TOKEN);
 
         }
 
@@ -124,9 +137,13 @@ public class Token {
         Map<String, Object> tokenInfo;
         String user_id = null;
 
+
+
         // cookie parsing
         Map<String, String> tokens = cookieParser(request);
         String accessToken = tokens.get("access_token");
+
+
 
         try{
             // access 검증

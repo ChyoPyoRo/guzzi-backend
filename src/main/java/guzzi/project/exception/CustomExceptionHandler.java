@@ -2,6 +2,7 @@ package guzzi.project.exception;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -12,16 +13,25 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomExceptionHandler {
     @ExceptionHandler(CustomException.class)
     // 여기에 object 에러들은 거쳐가고 임위로 만든 에러코드는 여기 안거쳐감.
-    public ErrorResponse handleException(
+    public ResponseEntity<?> handleException(
             CustomException e,
             HttpServletRequest request
     ){
         log.error("errorCode : {}, url {}, message:{}",
                 e.getCustomErrorCode(), request.getRequestURI(), e.getDetailMessage());
+        int HttpStatusCode = e.getCustomErrorCode().getHttpStatus().value();
 
-        return ErrorResponse.builder()
-                .status(e.getCustomErrorCode())
-                .statusMessage(e.getDetailMessage())
-                .build();
+         ErrorResponse response =  ErrorResponse.builder()
+                 .status(e.getCustomErrorCode())
+                 .statusMessage(e.getDetailMessage())
+                 .build();
+
+
+        ResponseEntity<?> responseEntity = ResponseEntity
+                .status(HttpStatusCode)
+                .body(response);
+        return responseEntity;
+
+
     }
 }

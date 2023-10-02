@@ -72,13 +72,10 @@
 </select>
     <select id="getVoteOneRecent" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
-            USER_ID,
-            VOTE_ID,
-            CONTENT,
-            FIRST_ANSWER,
-            SECOND_ANSWER,
-            (SELECT CHK FROM MY_VOTE_ANSWER WHERE USER_ID = #{USER_ID} and VOTE_ID = B.VOTE_ID)
-            AS CHK
+        USER_ID, VOTE_ID,
+        CONTENT,
+        FIRST_ANSWER,
+        SECOND_ANSWER
         FROM  VOTE
         WHERE VOTE_ID = #{VOTE_ID}
     </select>

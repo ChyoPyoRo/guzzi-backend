@@ -13,6 +13,8 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(FORBIDDEN, "리프레시 토큰이 유효하지 않습니다"),
     MISMATCH_REFRESH_TOKEN(FORBIDDEN, "리프레시 토큰의 유저 정보가 일치하지 않습니다"),
     INVALID_ACCESS_TOKEN(FORBIDDEN, "엑세스 토큰이 만료되었습니다."),
+    TOKEN_NOT_FOUND(FORBIDDEN, "토큰이 존재하지 않습니다."),
+
 
 
 

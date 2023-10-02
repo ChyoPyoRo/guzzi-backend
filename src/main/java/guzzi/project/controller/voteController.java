@@ -35,7 +35,7 @@ public class voteController {
     @PostMapping("/create")
     public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote, HttpServletRequest request )throws Exception{
         Map<String, Object> result;
-        Map<String,Object>   user = tokenValidation.TokenVal(request);
+        Map<String, Object> user = getTokenValidation.accessVal(request);
         vote.put("USER_ID", user.get("USER_ID"));
 
         try{
@@ -53,7 +53,7 @@ public class voteController {
 
     @GetMapping("/vote")
     public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
-        Map<String, Object> USER_ID = getTokenValidation.TokenVal(request);
+        Map<String, Object> USER_ID = getTokenValidation.accessVal(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
 
 
@@ -62,7 +62,6 @@ public class voteController {
             Map<String, Object> vote =
                     voteService.getVoteOne(paramMap);
             resultMap.put("VOTE", vote);
-
 
         }catch (SQLException e){
             System.out.println(e);
@@ -79,7 +78,7 @@ public class voteController {
 
     @GetMapping("/votes")
     public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
-        Map<String, Object> USER_ID = getTokenValidation.TokenVal(request);
+        Map<String, Object> USER_ID = getTokenValidation.accessVal(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
 
         HashMap<String, Object> voteList = null;
@@ -103,7 +102,7 @@ public class voteController {
     public ResponseEntity<?> votePatch(@RequestParam Map<String, Object> paramMap, @RequestBody Map<String, Object> option, HttpServletRequest request) throws Exception{
         Map<String, Object> result = null;
         HashMap<String, Object> dataList = new HashMap<>();
-        Map<String,Object>   user = tokenValidation.TokenVal(request);
+        Map<String,Object>   user = tokenValidation.accessVal(request);
 
         try {
             //데이터 저장하기
@@ -126,7 +125,7 @@ public class voteController {
     @GetMapping("/isMyVote")
     public ResponseEntity<?> isMyVote(HttpServletRequest request, @RequestParam Map<String, Object> voteId)  throws SQLException, Exception {
         Map<String,Boolean> isMyVote = new HashMap<>();
-        Map<String, Object> data = tokenValidation.TokenVal(request);
+        Map<String, Object> data = tokenValidation.accessVal(request);
         data.put("VOTE_ID",voteId.get("VOTE_ID"));
 
         try{
