@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 @Slf4j
-@CrossOrigin(origins="http://localhost:3000, https://guzzi-frontend.vercel.app/")
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RestController
 public class voteController {
     @Autowired
