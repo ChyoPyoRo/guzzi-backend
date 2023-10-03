@@ -50,7 +50,7 @@ public class voteController {
 
     @GetMapping("/vote")
     public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
-        Map<String, Object> USER_ID = tokenValidation.accessVal(request);
+        Map<String, Object> USER_ID = tokenValidation.returnUserId(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
 
 
@@ -75,7 +75,7 @@ public class voteController {
 
     @GetMapping("/votes")
     public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
-        Map<String, Object> USER_ID = tokenValidation.accessVal(request);
+        Map<String, Object> USER_ID = tokenValidation.returnUserId(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
 
         HashMap<String, Object> voteList = null;

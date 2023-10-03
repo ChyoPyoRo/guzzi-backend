@@ -40,12 +40,6 @@ public class Token {
         Map<String, Object> tokenInfo;
         String user_id;
 
-//        System.out.println("USER_ID");
-//        System.out.println(USER_ID);      // {}
-//        System.out.println("2🫥");
-
-//        System.out.println(request.getCookies()); // null
-
         if(request.getCookies() == null){
             throw new CustomException(TOKEN_NOT_FOUND);
         }
@@ -135,7 +129,7 @@ public class Token {
     // 일반 로직에서 USER_ID 추출 시 사용//
         Map<String, Object> USER_ID = new HashMap<>();
         Map<String, Object> tokenInfo;
-        String user_id = null;
+        String user_id = "-1";
 
 
 
@@ -162,5 +156,71 @@ public class Token {
 
         return USER_ID;
 
+    }
+
+
+// 로그인 검증이 아닌 USER_ID값만 리턴
+    public Map<String, Object> returnUserId (HttpServletRequest request) throws Exception, ExpiredJwtException{
+
+        Map<String, Object> USER_ID = new HashMap<>();
+        Map<String, Object> tokenInfo;
+        String user_id;
+
+
+        if(request.getCookies() != null){
+            // cookie parsing
+            Map<String, String> tokens = cookieParser(request);
+
+
+            // access token 만료 검증
+            String accessToken = tokens.get("access_token");
+            String refreshToken = tokens.get("refresh_token");
+
+            try{
+                // access 검증
+                user_id = securityService.getSubject(accessToken);
+
+            }catch (ExpiredJwtException A){
+                System.out.println("access token이 만료되었습니다.");
+                // access 만료 + refresh 검증
+                user_id = returnUserIdrefresh(refreshToken);
+                if(user_id != "-1") {
+                    // refresh 검증 완료 후 refresh, access 재발급
+                    tokenInfo = userService.updateAccessAndRefresh(user_id);
+                    USER_ID.put("token", tokenInfo);
+                }else{
+                    USER_ID.put("token", "-1");
+                }
+            }
+
+        }else{
+            user_id = "-1";
+        }
+
+        USER_ID.put("USER_ID", user_id);
+
+        return USER_ID;
+
+    }
+
+    public String returnUserIdrefresh (String refreshToken) throws ExpiredJwtException, JwtException{
+
+        String user_id = "-1";
+
+        try{
+            user_id = securityService.getSubject(refreshToken);
+
+            if(user_id != "-1") {
+                user_id = securityService.getSubject(refreshToken);
+            }else{
+                user_id = "-1";
+            }
+        }catch (ExpiredJwtException A){
+            System.out.println("access token이 만료되었습니다.");
+        }catch (JwtException A) {
+            System.out.println("access token 검증에 실패하였습니다.");
+        }
+
+        return user_id;
     }
 }
