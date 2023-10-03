@@ -16,6 +16,8 @@ import java.util.Map;
 
 
 @Slf4j
+
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RestController
 public class voteController {
     @Autowired

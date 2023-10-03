@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -24,6 +21,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @Slf4j
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RestController
 public class userController {
 //    private final static String DEFAULT_PATH = "guzzi.project";
