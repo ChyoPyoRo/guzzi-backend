@@ -93,7 +93,6 @@ public class VoteServiceImpl implements VoteService{
         System.out.println("plus");
         System.out.println(first_answer + second_answer);
         if(findVoteAlreadyExist == null){
-            System.out.println("1111111111111111111111111111111");
             //기존에 투표가 없으면
             voteMapper.create_my_vote_answer(paramMap);
             if(paramMap.get("CHK").equals("first")){

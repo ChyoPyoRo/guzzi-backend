@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
 //        if(idChkResult != 0) {
 //             new Exception();
 //        }
-        try{
+
             if(idChkResult != 0){
                 Exception e = new CustomException(DUPLICATE_RESOURCE); // 1. 예외 생성
                 throw e; // 2. 예외 던지기
@@ -51,11 +51,7 @@ public class UserServiceImpl implements UserService{
                 Map<String, Object> signupResult = userMapper.getUserData(signupData);
                 userMapper.createTokenTable(signupResult);
             }
-        }catch (Exception e){
-            System.out.println("??????????????????");
-            System.out.println(e);
-            throw new CustomException(INVALID_ACCESS_TOKEN);
-        }
+
 
     }
 
