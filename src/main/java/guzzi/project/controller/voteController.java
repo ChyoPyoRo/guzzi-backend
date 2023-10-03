@@ -25,16 +25,14 @@ public class voteController {
 
     @Autowired
     userController UserController;
-
-    @Autowired
-    Token getTokenValidation;
+    
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/create")
     public ResponseEntity<?> createVote(@RequestBody Map<String, Object> vote, HttpServletRequest request )throws Exception{
         Map<String, Object> result;
-        Map<String, Object> user = getTokenValidation.accessVal(request);
+        Map<String, Object> user = tokenValidation.accessVal(request);
         vote.put("USER_ID", user.get("USER_ID"));
 
         try{
@@ -52,7 +50,7 @@ public class voteController {
 
     @GetMapping("/vote")
     public ResponseEntity<?> getVoteOne(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
-        Map<String, Object> USER_ID = getTokenValidation.accessVal(request);
+        Map<String, Object> USER_ID = tokenValidation.accessVal(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
 
 
@@ -77,7 +75,7 @@ public class voteController {
 
     @GetMapping("/votes")
     public ResponseEntity<?> getVoteList(@RequestParam Map<String, Object> paramMap, HttpServletRequest request) throws SQLException, Exception {
-        Map<String, Object> USER_ID = getTokenValidation.accessVal(request);
+        Map<String, Object> USER_ID = tokenValidation.accessVal(request);
         paramMap.put("USER_ID", USER_ID.get("USER_ID"));
 
         HashMap<String, Object> voteList = null;
