@@ -77,8 +77,8 @@ public class userController {
         HttpHeaders headers = new HttpHeaders();
         try {
 
-            headers.add("Set-Cookie", "access_token=" + accessToken);
-            headers.add("Set-Cookie", "refresh_token=" + refreshToken);
+            headers.add("Set-Cookie", "access_token=" + accessToken + ";Secure;SameSite=None");
+            headers.add("Set-Cookie", "refresh_token=" + refreshToken + ";Secure;SameSite=None");
 
         } catch(Exception e){
             logger.error((Supplier<String>) e);
@@ -117,8 +117,8 @@ public class userController {
                 String access_Token = map.get("accessToken");
                 String refresh_Token = map.get("refreshToken");
 
-                headers.add("Set-Cookie", "access_token=" + access_Token);
-                headers.add("Set-Cookie", "refresh_token=" + refresh_Token);
+                headers.add("Set-Cookie", "access_token=" + access_Token + ";Secure;SameSite=None");
+                headers.add("Set-Cookie", "refresh_token=" + refresh_Token + ";Secure;SameSite=None");
                 tokenResult.remove("token");
 
             }
