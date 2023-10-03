@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @Slf4j
-@CrossOrigin(origins="*", allowedHeaders = "*")
+@CrossOrigin(origins= {"http://localhost:3000", "https://guzzi-frontend.vercel.app/"}, allowedHeaders = "*")
 @RestController
 public class userController {
 //    private final static String DEFAULT_PATH = "guzzi.project";
