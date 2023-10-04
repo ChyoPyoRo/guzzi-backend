@@ -46,6 +46,12 @@ public class VoteServiceImpl implements VoteService{
         Map<String, Object> vote = voteMapper.getVoteOne(paramMap);
         System.out.println("vote");
         System.out.println(vote);
+        if(vote.get("USER_ID").toString().equals(paramMap.get("USER_ID"))){
+            vote.put("isMyVote", true);
+        }
+        else{
+            vote.put("isMyVote", false);
+        }
         if(vote != null){
             return vote;
         }else {
@@ -64,6 +70,17 @@ public class VoteServiceImpl implements VoteService{
         pagination.setTotalRecordCount(getTotalVoteCnt);
 //      vote list return
         List<Map<String, Object>> voteList = voteMapper.getVoteList(pagination);
+        //list 길이만큼 반복
+        for(int i=0; i < voteList.size();i++){
+            //투표의 USER_ID(작성자)가 현재 로그인한 사용자(paramMap의 USER_ID와 같으면
+            if(voteList.get(i).get("USER_ID").toString().equals(paramMap.get("USER_ID"))){
+                //isMyVote라는 태그를 추가해야됨
+                voteList.get(i).put("isMyVote", true);
+            }
+            else{
+                voteList.get(i).put("isMyVote", false);
+            }
+        }
         resMap.put("pagination",pagination);
         resMap.put("voteList", voteList);
 
